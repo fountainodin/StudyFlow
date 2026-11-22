@@ -1,0 +1,1138 @@
+
+/* STUDYFLOW: DESIGN SYSTEM */
+:root {
+    /* Background colors */
+    --bg-main: #0b1120;
+    --bg-card: #111827;
+    --bg-input: #0f172a;
+
+    /* Brand colors */
+    --color-primary: #22c55e;
+    --color-primary-hover: #4ade80;
+
+    /* Text colors */
+    --text-main: #f8fafc;
+    --text-muted: #cbd5e1;
+
+    /* Borders */
+    --border-color: #334155;
+
+    /* Status colors */
+    --color-danger: #ef4444;
+}
+
+/* General settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0b0f0e;
+    color: #ffffff;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Website header */
+header {
+    background-color: var(--bg-card);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+header h1 {
+    color: #39e58c;
+    font-size: 32px;
+}
+
+header p {
+    color: #b8c4bd;
+}
+
+/* Navigation bar */
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #151c19;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #26352d;
+}
+
+nav a:hover {
+    background-color: #39e58c;
+    color: #0b0f0e;
+}
+
+/* Main content */
+main {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+section {
+    background-color: #151c19;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #26352d;
+    min-width: 0;
+}
+
+section h2 {
+    color: #39e58c;
+    margin-bottom: 10px;
+}
+
+section p {
+    color: #c4cec8;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: #8e9a93;
+    margin-top: 30px;
+    padding: 15px;
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+}
+/* Task Manager */
+
+#task-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+#task-input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #26352d;
+    background-color: #0b0f0e;
+    color: white;
+}
+
+#task-form button {
+    padding: 12px 16px;
+    background-color: #39e58c;
+    color: #0b0f0e;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#task-list {
+    list-style: none;
+    margin-top: 20px;
+}
+
+#task-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background-color: #0b0f0e;
+    border: 1px solid #26352d;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+}
+
+#task-list li span {
+    flex: 1;
+}
+
+#task-list li.completed span {
+    text-decoration: line-through;
+    color: #8e9a93;
+}
+
+#task-list button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: #ff6b6b;
+    color: #0b0f0e;
+}
+/* Coding Journey */
+
+#skill-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+#skill-input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #26352d;
+    background-color: #0b0f0e;
+    color: white;
+}
+
+#skill-form button {
+    padding: 12px 16px;
+    background-color: #39e58c;
+    color: #0b0f0e;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.skill-item {
+    margin-top: 18px;
+}
+
+.skill-item label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.skill-item input[type="range"] {
+    width: 100%;
+    accent-color: #39e58c;
+}
+
+.skill-item p {
+    font-size: 14px;
+    margin-top: 5px;
+}
+/* Study Timer */
+
+#timer {
+    font-size: 52px;
+    font-weight: bold;
+    color: #39e58c;
+    margin: 20px 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.timer-buttons button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #39e58c;
+    color: #0b0f0e;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.timer-buttons button:hover {
+    opacity: 0.85;
+}
+
+#session-count {
+    color: #39e58c;
+    font-weight: bold;
+}
+
+
+/* ==================================
+   STUDYFLOW: NOTES DESIGN
+================================== */
+
+#notes {
+    grid-column: 1 / -1;
+}
+
+#notes h2 {
+    color: #4ade80;
+    margin-bottom: 20px;
+}
+
+#notes-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+#subject-input,
+#note-input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    background-color: #111827;
+    color: #f8fafc;
+    font: inherit;
+}
+
+#subject-input:focus,
+#note-input:focus {
+    outline: 2px solid #22c55e;
+    border-color: #22c55e;
+}
+
+#note-input {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#notes-form button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: #22c55e;
+    color: #052e16;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#notes-form button:hover {
+    background-color: #4ade80;
+}
+
+#notes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+#notes-list > div {
+    padding: 20px;
+    border: 1px solid #334155;
+    border-left: 4px solid #22c55e;
+    border-radius: 12px;
+    background-color: #111827;
+    overflow-wrap: anywhere;
+}
+
+#notes-list h3 {
+    color: #4ade80;
+    margin-bottom: 10px;
+}
+
+#notes-list p {
+    color: #cbd5e1;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    margin-bottom: 16px;
+}
+
+#notes-list button {
+    padding: 8px 12px;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #fca5a5;
+    cursor: pointer;
+}
+
+#notes-list button:hover {
+    background-color: #7f1d1d;
+}
+
+/* ==================================
+   STUDYFLOW: BUTTON DESIGN
+================================== */
+
+button {
+    font: inherit;
+    transition: background-color 0.2s ease,
+                transform 0.2s ease,
+                border-color 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:focus-visible {
+    outline: 2px solid #4ade80;
+    outline-offset: 3px;
+}
+
+/* Task manager buttons */
+#task-form button,
+#task-list button:not(.delete-button) {
+    background-color: #22c55e;
+    color: #052e16;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 12px;
+    cursor: pointer;
+}
+
+/* Coding skills button */
+#skill-form button {
+    background-color: #22c55e;
+    color: #052e16;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+}
+
+/* Timer buttons */
+.timer-buttons button {
+    background-color: #166534;
+    color: #f0fdf4;
+    border: 1px solid #22c55e;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.timer-buttons button:hover {
+    background-color: #15803d;
+}
+
+/* Delete buttons */
+#task-list .delete-button {
+    background-color: transparent;
+    color: #fca5a5;
+    border: 1px solid #ef4444;
+    border-radius: 8px;
+    padding: 9px 12px;
+    cursor: pointer;
+}
+
+#task-list .delete-button:hover {
+    background-color: #7f1d1d;
+}
+
+/* Keep buttons easy to use on small screens */
+@media (max-width: 600px) {
+    button {
+        min-height: 40px;
+    }
+
+    .timer-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+/* ==================================
+   STUDYFLOW: DASHBOARD DESIGN
+================================== */
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.stat-card {
+    padding: 22px;
+    background: linear-gradient(145deg, #17251f, #111827);
+    border: 1px solid #2d4938;
+    border-radius: 14px;
+    transition: transform 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: #22c55e;
+}
+
+.stat-card h3 {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.stat-card p {
+    color: #4ade80;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+@media (max-width: 450px) {
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 18px;
+    }
+}
+
+/* ==================================
+   STUDYFLOW: SPACING & RESPONSIVE DESIGN
+================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    line-height: 1.6;
+    margin: 0;
+}
+
+header {
+    padding: 24px 20px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+nav a {
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+nav a:hover {
+    background-color: #1f2937;
+}
+
+main {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    padding: 24px 20px;
+    gap: 24px;
+}
+
+section {
+    min-width: 0;
+    padding: 24px;
+    border-radius: 14px;
+}
+
+input,
+textarea,
+button {
+    max-width: 100%;
+}
+
+#task-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+#task-list li span {
+    flex: 1;
+    min-width: 120px;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 20px 14px;
+    }
+
+    main {
+        padding: 16px 12px;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    section {
+        padding: 18px;
+    }
+
+    nav {
+        gap: 6px;
+    }
+
+    nav a {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    #task-list li {
+        align-items: stretch;
+    }
+
+    #task-list li span {
+        flex-basis: 100%;
+    }
+}
+
+/* STUDYFLOW: APPLY DESIGN COLORS */
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+section {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+input,
+textarea {
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+nav a {
+    color: var(--text-main);
+}
+
+nav a:hover {
+    background-color: var(--bg-input);
+    color: var(--color-primary-hover);
+}
+
+h1,
+h2 {
+    color: var(--color-primary-hover);
+}
+
+/* STUDYFLOW: TYPOGRAPHY */
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: 1.4rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+}
+
+h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+p,
+label,
+input,
+textarea,
+button,
+nav a {
+    font-family: inherit;
+}
+
+input,
+textarea,
+button {
+    font-size: 0.95rem;
+}
+
+nav a {
+    font-weight: 500;
+}
+
+/* STUDYFLOW: CONSISTENT SPACING */
+
+/* Consistent space inside each section */
+section {
+    padding: 28px;
+}
+
+/* Give section headings room to breathe */
+section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Keep form fields evenly spaced */
+#task-form,
+#skill-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Add space between tasks and skills */
+#task-list,
+#skill-list {
+    margin-top: 18px;
+    padding-left: 0;
+}
+
+#task-list li,
+#skill-list li {
+    margin-bottom: 14px;
+}
+
+/* Consistent space around the timer */
+#timer {
+    margin: 20px 0;
+}
+
+/* Keep notes comfortable to read */
+#notes-form {
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+/* Prevent sections from feeling cramped on smaller screens */
+@media (max-width: 600px) {
+    section {
+        padding: 18px;
+    }
+}
+
+/* STUDYFLOW: CARD POLISH */
+
+/* Main sections */
+section {
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+/* Subtle highlight when hovering over a section */
+section:hover {
+    border-color: rgba(74, 222, 128, 0.3);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+/* Dashboard cards */
+.stat-card {
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Individual saved notes */
+#notes-list > div {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+#notes-list > div:hover {
+    transform: translateY(-2px);
+    border-color: rgba(74, 222, 128, 0.5);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* STUDYFLOW: BUTTON POLISH */
+
+button {
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 9px;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* Clear keyboard focus */
+button:focus-visible {
+    outline: 2px solid var(--color-primary-hover);
+    outline-offset: 3px;
+}
+
+/* A subtle hover highlight */
+#task-form button:hover,
+#skill-form button:hover,
+#notes-form button:hover {
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.14);
+}
+
+/* Make buttons feel responsive when clicked */
+button:active {
+    transform: scale(0.98);
+}
+
+/* Show when a button cannot be used */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* STUDYFLOW: NAVIGATION POLISH */
+
+nav {
+    gap: 10px;
+    margin-top: 18px;
+}
+
+nav a {
+    display: inline-block;
+    padding: 9px 14px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+    color: var(--color-primary-hover);
+    background-color: var(--bg-input);
+    border-color: var(--border-color);
+    outline-offset: 3px;
+}
+
+/* STUDYFLOW: LIST ITEM POLISH */
+
+/* Task list */
+#task-list li {
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    transition: border-color 0.2s ease,
+                background-color 0.2s ease;
+}
+
+#task-list li:hover {
+    border-color: rgba(74, 222, 128, 0.45);
+}
+
+/* Coding skill list */
+#skill-list li {
+    padding: 14px;
+    margin-bottom: 12px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+/* Keep skill progress controls within their container */
+#skill-list input[type="range"] {
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    max-width: 100%;
+}
+
+/* Make completed tasks visually distinct */
+#task-list li:has(input[type="checkbox"]:checked) {
+    opacity: 0.75;
+}
+
+/* STUDYFLOW: TIMER POLISH */
+
+#timer {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--color-primary-hover);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    margin: 24px 0;
+}
+
+.timer-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* STUDYFLOW: DAILY PROGRESS TRACKER */
+
+.daily-progress {
+    margin-top: 24px;
+    padding: 20px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+}
+
+.daily-progress h3 {
+    margin-top: 0;
+    color: var(--color-primary-hover);
+}
+
+.daily-progress p {
+    color: var(--text-muted);
+}
+
+.progress-track {
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    background-color: var(--border-color);
+    border-radius: 999px;
+}
+
+#daily-progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+.priority-high {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.priority-normal {
+    color: #c4cec8;
+}
+
+.priority-low {
+    color: #39e58c;
+}
+#task-list li.high-priority-task {
+    border-left: 4px solid #ff6b6b;
+    padding-left: 12px;
+}
+#task-list li.completed {
+    opacity: 0.6;
+}
+#task-list li.completed span:first-child {
+    text-decoration: line-through;
+}
+#task-filters .selected-filter {
+    background-color: #39e58c;
+    color: #0b0f0e;
+    border-color: #39e58c;
+}
+/* ---- FIXES: match the classes the JavaScript creates ---- */
+
+/* Task priority dropdown */
+#task-priority {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    font: inherit;
+}
+
+/* Filter buttons */
+#task-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+#task-filters button {
+    padding: 8px 14px;
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+#task-filters button:hover {
+    border-color: var(--color-primary);
+}
+
+/* Skill items */
+.skill-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 14px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.skill-item label {
+    flex: 1 0 100%;
+    margin-bottom: 0;
+}
+
+.skill-item input[type="range"] {
+    flex: 1;
+    width: auto;
+    min-width: 120px;
+}
+
+/* One delete button style everywhere */
+.delete-button {
+    background-color: transparent;
+    color: #fca5a5;
+    border: 1px solid var(--color-danger);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #7f1d1d;
+}
+
+/* Note cards (the #notes-list prefix beats your older red button rules) */
+#notes-list .note-card {
+    padding: 20px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 12px;
+    overflow-wrap: anywhere;
+}
+
+#notes-list .note-card small {
+    display: block;
+    margin-bottom: 14px;
+    color: #94a3b8;
+}
+
+#notes-list .note-card button {
+    margin-right: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#notes-list .note-card button:not(.delete-button) {
+    background-color: transparent;
+    color: var(--color-primary-hover);
+    border: 1px solid var(--color-primary);
+}
+
+#notes-list .note-card button:not(.delete-button):hover {
+    background-color: rgba(34, 197, 94, 0.15);
+}
+
+#notes-list .note-card .delete-button {
+    color: #fca5a5;
+    border: 1px solid var(--color-danger);
+}
+
+#notes-list .note-card .delete-button:hover {
+    background-color: #7f1d1d;
+}
+#task-list .empty-state,
+#skill-list .empty-state {
+    display: block;
+    padding: 24px;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed var(--border-color);
+    border-radius: 10px;
+}
+#toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    max-width: calc(100% - 32px);
+    padding: 14px 20px;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+}
+
+#toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+#notes-list .note-card input,
+#notes-list .note-card textarea {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font: inherit;
+}
+
+#notes-list .note-card textarea {
+    resize: vertical;
+}
+
+#notes-list .note-card .primary-button {
+    background-color: var(--color-primary);
+    color: #052e16;
+    border: 1px solid var(--color-primary);
+}
+
+#notes-list .note-card .primary-button:hover {
+    background-color: var(--color-primary-hover);
+}
+
+#notes-list .empty-state {
+    grid-column: 1 / -1;
+    padding: 24px;
+    text-align: center;
+    color: var(--text-muted);
+    border: 1px dashed var(--border-color);
+    border-radius: 10px;
+}

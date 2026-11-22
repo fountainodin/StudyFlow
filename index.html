@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyFlow | Student Dashboard</title>
+    <meta name="description" content="StudyFlow helps students manage tasks, track coding skills, run study timers and keep notes.">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Website Header -->
+    <header>
+        <h1>StudyFlow</h1>
+        <p>Your academics. Your skills. Your progress.</p>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#tasks">My Tasks</a>
+        <a href="#coding">Coding Journey</a>
+        <a href="#study">Study Timer</a>
+    </nav>
+
+    <!-- Main Website Content -->
+    <main>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <h2>Welcome to StudyFlow! 👋</h2>
+
+            <p>
+                Organize your studies and build your future.
+            </p>
+
+            <div class="dashboard-stats">
+
+                <div class="stat-card">
+                    <h3>Total Tasks</h3>
+                    <p id="total-tasks">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Completed Tasks</h3>
+                    <p id="completed-tasks">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Coding Skills</h3>
+                    <p id="total-skills">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Study Sessions</h3>
+                    <p id="total-sessions">0</p>
+                </div>
+
+            </div>
+
+<div class="daily-progress">
+    <h3>Daily Progress</h3>
+
+    <p>
+        Tasks completed:
+        <span id="daily-completed">0</span> /
+        <span id="daily-goal">5</span>
+    </p>
+
+    <div class="progress-track">
+        <div id="daily-progress-bar"></div>
+    </div>
+
+    <p id="daily-progress-message">
+        Let's get started!
+    </p>
+</div>
+        </section>
+
+        <!-- Task Manager Section -->
+        <section id="tasks">
+            <h2>My Tasks</h2>
+
+            <p>Manage your assignments and daily activities.</p>
+
+            <form id="task-form">
+
+                <input
+                    type="text"
+                    id="task-input"
+                    placeholder="Enter a task..."
+                    required
+                >
+
+                <select id="task-priority">
+    <option value="Normal">Normal priority</option>
+    <option value="High">High priority</option>
+    <option value="Low">Low priority</option>
+</select>
+                <button type="submit">Add Task</button>
+
+            </form>
+            <div id="task-filters">
+    <button type="button" data-task-filter="all">All</button>
+    <button type="button" data-task-filter="active">Active</button>
+    <button type="button" data-task-filter="completed">Completed</button>
+</div>
+
+            <ul id="task-list"></ul>
+        </section>
+
+        <!-- Coding Journey Section -->
+        <section id="coding">
+            <h2>My Coding Journey</h2>
+
+            <p>Track your programming skills and projects.</p>
+
+            <form id="skill-form">
+
+                <input
+                    type="text"
+                    id="skill-input"
+                    placeholder="Enter a skill (e.g. Python)"
+                    required
+                >
+
+                <button type="submit">Add Skill</button>
+
+            </form>
+
+            <div id="skill-list"></div>
+        </section>
+
+        <!-- Study Timer Section -->
+        <section id="study">
+            <h2>Study Timer</h2>
+
+            <p>Stay focused and make every study session count.</p>
+
+            <div id="timer">25:00</div>
+
+            <div class="timer-buttons">
+
+                <button id="start-timer" type="button">
+                    Start
+                </button>
+
+                <button id="pause-timer" type="button">
+                    Pause
+                </button>
+
+                <button id="reset-timer" type="button">
+                    Reset
+                </button>
+
+            </div>
+
+            <p>
+                Completed sessions:
+                <span id="session-count">0</span>
+            </p>
+        </section>
+
+<section id="notes">
+    <h2>My Study Notes</h2>
+
+    <form id="notes-form">
+        <input
+            type="text"
+            id="subject-input"
+            placeholder="Enter subject (e.g. Mathematics)"
+            required
+        >
+
+        <textarea
+            id="note-input"
+            placeholder="Write your study notes here..."
+            rows="5"
+            required
+        ></textarea>
+
+        <button type="submit">Save Note</button>
+    </form>
+
+    <div id="notes-list"></div>
+</section>
+
+    </main>
+
+    <!-- Website Footer -->
+    <footer>
+        <p>&copy; 2026 StudyFlow. Built for students.</p>
+    </footer>
+
+    <!-- JavaScript File -->
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
