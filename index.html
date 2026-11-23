@@ -89,6 +89,7 @@
             <p>Manage your assignments and daily activities.</p>
 
             <form id="task-form">
+                <label for="task-input" class="sr-only">New task</label>
 
                 <input
                     type="text"
@@ -96,6 +97,7 @@
                     placeholder="Enter a task..."
                     required
                 >
+                <label for="task-input" class="sr-only">New task</label>
 
                 <select id="task-priority">
     <option value="Normal">Normal priority</option>
@@ -121,6 +123,7 @@
             <p>Track your programming skills and projects.</p>
 
             <form id="skill-form">
+                <label for="skill-input" class="sr-only">New skill</label>
 
                 <input
                     type="text"
@@ -170,12 +173,14 @@
     <h2>My Study Notes</h2>
 
     <form id="notes-form">
+        <label for="subject-input" class="sr-only">Note subject</label>
         <input
             type="text"
             id="subject-input"
             placeholder="Enter subject (e.g. Mathematics)"
             required
         >
+        <label for="note-input" class="sr-only">Note text</label>
 
         <textarea
             id="note-input"
