@@ -1147,3 +1147,8 @@ nav a:focus-visible {
     white-space: nowrap;
     border: 0;
 }
+nav a.active {
+    color: var(--color-primary-hover);
+    background-color: var(--bg-input);
+    border-color: var(--color-primary);
+}

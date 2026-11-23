@@ -32,6 +32,18 @@ function localDateKey(date = new Date()) {
     return `${year}-${month}-${day}`;
 }
 
+// Turns "2026-11-30" into a readable local date like "30 Nov 2026"
+function formatDueDate(dateKey) {
+    const [year, month, day] = dateKey.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+
+    return date.toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    });
+}
+
 // Small message that slides up from the bottom (replaces alert)
 let toastTimeout = null;
 
@@ -57,6 +69,7 @@ const taskForm = getElement("task-form");
 const taskInput = getElement("task-input");
 const taskList = getElement("task-list");
 const taskPriority = getElement("task-priority");
+const taskDue = getElement("task-due");
 const taskFilters = getElement("task-filters");
 let currentTaskFilter = "all";
 
@@ -125,12 +138,26 @@ function renderTasks() {
                 renderTasks();
             });
 
-            listItem.append(
-                taskText,
-                priorityText,
-                completeButton,
-                deleteButton
-            );
+            listItem.append(taskText, priorityText);
+
+            // Deadline (only shown if the task has one)
+            if (task.dueDate) {
+                const dueText = document.createElement("span");
+                dueText.className = "due-date";
+                dueText.textContent = `Due: ${formatDueDate(task.dueDate)}`;
+
+                const isOverdue =
+                    !task.completed && task.dueDate < localDateKey();
+
+                if (isOverdue) {
+                    dueText.classList.add("overdue");
+                    dueText.textContent += " (overdue)";
+                }
+
+                listItem.appendChild(dueText);
+            }
+
+            listItem.append(completeButton, deleteButton);
 
             taskList.appendChild(listItem);
         });
@@ -160,6 +187,7 @@ if (taskForm && taskInput) {
         tasks.push({
             text,
             priority: taskPriority ? taskPriority.value : "Normal",
+            dueDate: taskDue && taskDue.value ? taskDue.value : "",
             completed: false
         });
 
@@ -167,6 +195,11 @@ if (taskForm && taskInput) {
         renderTasks();
 
         taskInput.value = "";
+
+        if (taskDue) {
+            taskDue.value = "";
+        }
+
         taskInput.focus();
     });
 }
@@ -293,12 +326,20 @@ const pauseButton = getElement("pause-timer");
 const resetButton = getElement("reset-timer");
 const sessionCount = getElement("session-count");
 
-// Session length in seconds (25 minutes).
-// For a quick test, temporarily change to 5, then change it back.
-const FOCUS_DURATION = 25 * 60;
 const TIMER_KEY = "studyflow-timer";
+const LENGTH_KEY = "studyflow-timer-minutes";
+const ALLOWED_MINUTES = [15, 25, 45, 50];
+const timerLength = getElement("timer-length");
 
-let timeLeft = FOCUS_DURATION;
+function readTimerMinutes() {
+    const saved = readNumber(LENGTH_KEY);
+    return ALLOWED_MINUTES.includes(saved) ? saved : 25;
+}
+
+// Session length in seconds (chosen by the student, default 25 minutes)
+let focusDuration = readTimerMinutes() * 60;
+
+let timeLeft = focusDuration;
 let timerInterval = null;
 let timerEndTime = null;
 let completedSessions = readNumber("studyflow-sessions");
@@ -327,7 +368,7 @@ function loadTimerState() {
         } else if (
             Number.isFinite(saved.timeLeft) &&
             saved.timeLeft >= 0 &&
-            saved.timeLeft <= FOCUS_DURATION
+            saved.timeLeft <= focusDuration
         ) {
             timeLeft = saved.timeLeft;
         }
@@ -389,7 +430,7 @@ function startTimer() {
     }
 
     if (timeLeft <= 0) {
-        timeLeft = FOCUS_DURATION;
+        timeLeft = focusDuration;
     }
 
     timerEndTime = Date.now() + timeLeft * 1000;
@@ -424,7 +465,7 @@ function resetTimer() {
     }
 
     timerEndTime = null;
-    timeLeft = FOCUS_DURATION;
+    timeLeft = focusDuration;
 
     saveTimerState();
     displayTime();
@@ -440,6 +481,30 @@ if (pauseButton) {
 
 if (resetButton) {
     resetButton.addEventListener("click", resetTimer);
+}
+
+if (timerLength) {
+    timerLength.value = String(focusDuration / 60);
+
+    timerLength.addEventListener("change", () => {
+        if (timerInterval !== null) {
+            timerLength.value = String(focusDuration / 60);
+            showMessage("Pause the timer before changing its length.");
+            return;
+        }
+
+        const minutes = Number(timerLength.value);
+
+        if (!ALLOWED_MINUTES.includes(minutes)) {
+            timerLength.value = String(focusDuration / 60);
+            return;
+        }
+
+        focusDuration = minutes * 60;
+        localStorage.setItem(LENGTH_KEY, String(minutes));
+        resetTimer();
+        showMessage(`Timer set to ${minutes} minutes.`);
+    });
 }
 
 // ---------- Study notes ----------
@@ -697,3 +762,43 @@ if (timerEndTime !== null) {
         finishTimer();
     }
 }
+
+// ---------- Active nav link ----------
+
+const navLinks = document.querySelectorAll("nav a");
+const pageSections = document.querySelectorAll("main section");
+
+function setActiveLink(id) {
+    navLinks.forEach((link) => {
+        const isActive = link.getAttribute("href") === `#${id}`;
+
+        link.classList.toggle("active", isActive);
+
+        if (isActive) {
+            link.setAttribute("aria-current", "true");
+        } else {
+            link.removeAttribute("aria-current");
+        }
+    });
+}
+
+if ("IntersectionObserver" in window && pageSections.length > 0) {
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveLink(entry.target.id);
+                }
+            });
+        },
+        { rootMargin: "-35% 0px -55% 0px" }
+    );
+
+    pageSections.forEach((section) => observer.observe(section));
+}
+
+navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+        setActiveLink(link.getAttribute("href").slice(1));
+    });
+});
