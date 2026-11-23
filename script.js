@@ -673,6 +673,7 @@ function updateDailyProgress() {
     const dailyCompletedElement = getElement("daily-completed");
     const dailyGoalElement = getElement("daily-goal");
     const progressBar = getElement("daily-progress-bar");
+    const progressTrack = document.querySelector(".progress-track");
     const progressMessage = getElement("daily-progress-message");
 
     const completedToday = tasks.filter((task) => {
@@ -695,9 +696,18 @@ function updateDailyProgress() {
         );
 
         progressBar.style.width = `${percentage}%`;
-        progressBar.setAttribute("aria-valuenow", String(percentage));
-        progressBar.setAttribute("aria-valuemin", "0");
-        progressBar.setAttribute("aria-valuemax", "100");
+    }
+
+    if (progressTrack) {
+        const percentage = Math.min(
+            100,
+            Math.round((completedToday / dailyGoal) * 100)
+        );
+
+        progressTrack.setAttribute("role", "progressbar");
+        progressTrack.setAttribute("aria-valuenow", String(percentage));
+        progressTrack.setAttribute("aria-valuemin", "0");
+        progressTrack.setAttribute("aria-valuemax", "100");
     }
 
     if (progressMessage) {
