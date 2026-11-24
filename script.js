@@ -517,6 +517,82 @@ const notesList = getElement("notes-list");
 let notes = readArray("studyflow-notes");
 let editingNoteIndex = null;
 
+// Search and subject filter
+const notesSearch = getElement("notes-search");
+const notesSubjectFilter = getElement("notes-subject-filter");
+let noteSearchText = "";
+let noteSubject = "all";
+
+// Rebuilds the subject dropdown from the subjects your notes use
+function updateSubjectFilter() {
+    if (!notesSubjectFilter) {
+        return;
+    }
+
+    const subjects = [
+        ...new Set(
+            notes
+                .map((note) => (note.subject || "").trim())
+                .filter(Boolean)
+        )
+    ].sort((a, b) => a.localeCompare(b));
+
+    if (noteSubject !== "all" && !subjects.includes(noteSubject)) {
+        noteSubject = "all";
+    }
+
+    notesSubjectFilter.replaceChildren();
+
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "All subjects";
+    notesSubjectFilter.appendChild(allOption);
+
+    subjects.forEach((subject) => {
+        const option = document.createElement("option");
+        option.value = subject;
+        option.textContent = subject;
+        notesSubjectFilter.appendChild(option);
+    });
+
+    notesSubjectFilter.value = noteSubject;
+}
+
+function noteMatchesFilters(note) {
+    const subject = (note.subject || "").trim();
+
+    if (noteSubject !== "all" && subject !== noteSubject) {
+        return false;
+    }
+
+    const query = noteSearchText.trim().toLowerCase();
+
+    if (query === "") {
+        return true;
+    }
+
+    return (
+        subject.toLowerCase().includes(query) ||
+        (note.text || "").toLowerCase().includes(query)
+    );
+}
+
+if (notesSearch) {
+    notesSearch.addEventListener("input", () => {
+        noteSearchText = notesSearch.value;
+        editingNoteIndex = null;
+        renderNotes();
+    });
+}
+
+if (notesSubjectFilter) {
+    notesSubjectFilter.addEventListener("change", () => {
+        noteSubject = notesSubjectFilter.value;
+        editingNoteIndex = null;
+        renderNotes();
+    });
+}
+
 function saveNotes() {
     saveArray("studyflow-notes", notes);
 }
@@ -526,9 +602,16 @@ function renderNotes() {
         return;
     }
 
+    updateSubjectFilter();
     notesList.replaceChildren();
 
     notes.forEach((note, index) => {
+        // Skip notes that don't match the search or subject filter.
+        // "index" still points to the note's real position, so Edit and Delete stay correct.
+        if (!noteMatchesFilters(note)) {
+            return;
+        }
+
         const noteCard = document.createElement("article");
         noteCard.className = "note-card";
 
@@ -632,10 +715,13 @@ function renderNotes() {
         notesList.appendChild(noteCard);
     });
 
-    if (notes.length === 0) {
+    if (notesList.children.length === 0) {
         const empty = document.createElement("div");
         empty.className = "empty-state";
-        empty.textContent = "No notes yet. Write your first one above.";
+        empty.textContent =
+            notes.length === 0
+                ? "No notes yet. Write your first one above."
+                : "No notes match your search.";
         notesList.appendChild(empty);
     }
 }
@@ -673,7 +759,6 @@ function updateDailyProgress() {
     const dailyCompletedElement = getElement("daily-completed");
     const dailyGoalElement = getElement("daily-goal");
     const progressBar = getElement("daily-progress-bar");
-    const progressTrack = document.querySelector(".progress-track");
     const progressMessage = getElement("daily-progress-message");
 
     const completedToday = tasks.filter((task) => {
@@ -696,18 +781,9 @@ function updateDailyProgress() {
         );
 
         progressBar.style.width = `${percentage}%`;
-    }
-
-    if (progressTrack) {
-        const percentage = Math.min(
-            100,
-            Math.round((completedToday / dailyGoal) * 100)
-        );
-
-        progressTrack.setAttribute("role", "progressbar");
-        progressTrack.setAttribute("aria-valuenow", String(percentage));
-        progressTrack.setAttribute("aria-valuemin", "0");
-        progressTrack.setAttribute("aria-valuemax", "100");
+        progressBar.setAttribute("aria-valuenow", String(percentage));
+        progressBar.setAttribute("aria-valuemin", "0");
+        progressBar.setAttribute("aria-valuemax", "100");
     }
 
     if (progressMessage) {

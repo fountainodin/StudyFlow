@@ -146,6 +146,15 @@
             <h2>Study Timer</h2>
 
             <p>Stay focused and make every study session count.</p>
+            <div class="timer-length">
+    <label for="timer-length">Session length</label>
+    <select id="timer-length">
+        <option value="15">15 minutes</option>
+        <option value="25">25 minutes</option>
+        <option value="45">45 minutes</option>
+        <option value="50">50 minutes</option>
+    </select>
+</div>
 
             <div id="timer">25:00</div>
 
@@ -193,6 +202,15 @@
 
         <button type="submit">Save Note</button>
     </form>
+    <div class="notes-tools">
+    <label for="notes-search" class="sr-only">Search notes</label>
+    <input type="search" id="notes-search" placeholder="Search your notes...">
+
+    <label for="notes-subject-filter" class="sr-only">Filter by subject</label>
+    <select id="notes-subject-filter">
+        <option value="all">All subjects</option>
+    </select>
+</div>
 
     <div id="notes-list"></div>
 </section>
