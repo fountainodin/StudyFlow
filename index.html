@@ -28,6 +28,7 @@
         <a href="#notes">Study Notes</a>
     </nav>
 
+
     <!-- Main Website Content -->
     <main>
 
@@ -79,6 +80,21 @@
     <p id="daily-progress-message">
         Let's get started!
     </p>
+</div>
+<div class="weekly-stats">
+    <h3>This Week</h3>
+
+    <p class="weekly-summary">
+        <span id="week-tasks">0</span> tasks completed &middot;
+        <span id="week-sessions">0</span> focus sessions
+    </p>
+
+    <div id="weekly-chart" class="weekly-chart"></div>
+
+    <div class="chart-legend">
+        <span><i class="legend-dot tasks"></i>Tasks completed</span>
+        <span><i class="legend-dot sessions"></i>Focus sessions</span>
+    </div>
 </div>
         </section>
 
@@ -213,6 +229,21 @@
 </div>
 
     <div id="notes-list"></div>
+</section>
+<section id="backup">
+    <h2>Backup Your Data</h2>
+    <p>
+        Your tasks, skills and notes are saved in this browser only.
+        Clearing your browser data will remove them. Download a backup
+        to keep a copy, and restore it here whenever you need it.
+    </p>
+
+    <div class="backup-buttons">
+        <button type="button" id="download-backup">Download Backup</button>
+
+        <input type="file" id="restore-backup" accept=".json,application/json" class="sr-only">
+        <label for="restore-backup" class="file-button">Restore Backup</label>
+    </div>
 </section>
 
     </main>

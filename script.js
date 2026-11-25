@@ -344,6 +344,11 @@ let timerInterval = null;
 let timerEndTime = null;
 let completedSessions = readNumber("studyflow-sessions");
 
+// One date entry for every finished session, used for the weekly chart
+let sessionLog = readArray("studyflow-session-log").filter(
+    (day) => typeof day === "string"
+);
+
 function saveTimerState() {
     localStorage.setItem(
         TIMER_KEY,
@@ -403,6 +408,9 @@ function finishTimer() {
     timerEndTime = null;
     timeLeft = 0;
     displayTime();
+
+    sessionLog.push(localDateKey());
+    saveArray("studyflow-session-log", sessionLog);
 
     completedSessions += 1;
     localStorage.setItem("studyflow-sessions", String(completedSessions));
@@ -753,6 +761,127 @@ if (notesForm && subjectInput && noteInput) {
     });
 }
 
+// ---------- Backup and restore ----------
+
+const downloadBackupButton = getElement("download-backup");
+const restoreBackupInput = getElement("restore-backup");
+
+function downloadBackup() {
+    const backup = {
+        app: "StudyFlow",
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        tasks,
+        skills,
+        notes,
+        sessions: completedSessions,
+        sessionLog,
+        timerMinutes: focusDuration / 60
+    };
+
+    const blob = new Blob(
+        [JSON.stringify(backup, null, 2)],
+        { type: "application/json" }
+    );
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `studyflow-backup-${localDateKey()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    showMessage("Backup downloaded.");
+}
+
+async function restoreBackup(file) {
+    try {
+        const data = JSON.parse(await file.text());
+
+        const looksValid =
+            data &&
+            data.app === "StudyFlow" &&
+            Array.isArray(data.tasks) &&
+            Array.isArray(data.skills) &&
+            Array.isArray(data.notes);
+
+        if (!looksValid) {
+            showMessage("That file is not a StudyFlow backup.");
+            return;
+        }
+
+        // Restoring replaces current data, so ask first
+        const confirmed = confirm(
+            "Restoring will replace your current tasks, skills and notes. Continue?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        // Keep only items that have the fields the app needs
+        tasks = data.tasks.filter(
+            (task) => task && typeof task.text === "string"
+        );
+        skills = data.skills.filter(
+            (skill) => skill && typeof skill.name === "string"
+        );
+        notes = data.notes.filter(
+            (note) =>
+                note &&
+                typeof note.subject === "string" &&
+                typeof note.text === "string"
+        );
+        completedSessions =
+            Number.isFinite(data.sessions) && data.sessions >= 0
+                ? Math.floor(data.sessions)
+                : 0;
+
+        saveTasks();
+        saveSkills();
+        saveNotes();
+        localStorage.setItem("studyflow-sessions", String(completedSessions));
+
+        sessionLog = Array.isArray(data.sessionLog)
+            ? data.sessionLog.filter(
+                (day) =>
+                    typeof day === "string" &&
+                    /^\d{4}-\d{2}-\d{2}$/.test(day)
+            )
+            : [];
+        saveArray("studyflow-session-log", sessionLog);
+
+        editingNoteIndex = null;
+        renderTasks();
+        renderSkills();
+        renderNotes();
+        updateSessionCount();
+
+        showMessage("Backup restored.");
+    } catch (error) {
+        showMessage("Could not read that file.");
+    }
+}
+
+if (downloadBackupButton) {
+    downloadBackupButton.addEventListener("click", downloadBackup);
+}
+
+if (restoreBackupInput) {
+    restoreBackupInput.addEventListener("change", () => {
+        const file = restoreBackupInput.files[0];
+
+        if (file) {
+            restoreBackup(file);
+        }
+
+        // Lets the same file be chosen again later
+        restoreBackupInput.value = "";
+    });
+}
+
 // ---------- Daily progress ----------
 
 function updateDailyProgress() {
@@ -799,6 +928,101 @@ function updateDailyProgress() {
     }
 }
 
+// ---------- Weekly statistics ----------
+
+// The last 7 days, oldest first, ending with today
+function lastSevenDays() {
+    const days = [];
+
+    for (let offset = 6; offset >= 0; offset -= 1) {
+        const date = new Date();
+        date.setDate(date.getDate() - offset);
+        days.push(date);
+    }
+
+    return days;
+}
+
+function renderWeeklyStats() {
+    const chart = getElement("weekly-chart");
+    const weekTasksElement = getElement("week-tasks");
+    const weekSessionsElement = getElement("week-sessions");
+
+    if (!chart) {
+        return;
+    }
+
+    const todayKey = localDateKey();
+
+    const days = lastSevenDays().map((date) => {
+        const key = localDateKey(date);
+
+        return {
+            key,
+            label: date.toLocaleDateString(undefined, { weekday: "short" }),
+            tasks: tasks.filter(
+                (task) => task.completed && task.completedDate === key
+            ).length,
+            sessions: sessionLog.filter((day) => day === key).length
+        };
+    });
+
+    const tallest = Math.max(
+        1,
+        ...days.map((day) => Math.max(day.tasks, day.sessions))
+    );
+
+    chart.replaceChildren();
+
+    days.forEach((day) => {
+        const column = document.createElement("div");
+        const bars = document.createElement("div");
+        const taskBar = document.createElement("div");
+        const sessionBar = document.createElement("div");
+        const label = document.createElement("span");
+
+        column.className = "week-day";
+        column.setAttribute("role", "img");
+        column.setAttribute(
+            "aria-label",
+            `${day.label}: ${day.tasks} tasks completed, ${day.sessions} focus sessions`
+        );
+        column.title =
+            `${day.label}: ${day.tasks} tasks, ${day.sessions} sessions`;
+
+        if (day.key === todayKey) {
+            column.classList.add("today");
+        }
+
+        bars.className = "week-bars";
+
+        taskBar.className = "week-bar tasks";
+        taskBar.style.height = `${(day.tasks / tallest) * 100}%`;
+
+        sessionBar.className = "week-bar sessions";
+        sessionBar.style.height = `${(day.sessions / tallest) * 100}%`;
+
+        label.className = "week-label";
+        label.textContent = day.label;
+
+        bars.append(taskBar, sessionBar);
+        column.append(bars, label);
+        chart.appendChild(column);
+    });
+
+    if (weekTasksElement) {
+        weekTasksElement.textContent = String(
+            days.reduce((sum, day) => sum + day.tasks, 0)
+        );
+    }
+
+    if (weekSessionsElement) {
+        weekSessionsElement.textContent = String(
+            days.reduce((sum, day) => sum + day.sessions, 0)
+        );
+    }
+}
+
 // ---------- Dashboard statistics ----------
 
 function updateDashboardStats() {
@@ -828,6 +1052,7 @@ function updateDashboardStats() {
     }
 
     updateDailyProgress();
+    renderWeeklyStats();
 }
 
 // ---------- Initial page setup ----------
